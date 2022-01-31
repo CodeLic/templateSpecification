@@ -1,6 +1,6 @@
 {
   "name": "@codelic/templatespecification",
-  "version": "1.0.3",
+  "version": "1.0.20",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -22,12 +22,14 @@
   "homepage": "https://github.com/CodeLic/templateSpecification#readme",
   "dependencies": {
     "arg": "^5.0.1",
-    "chalk": "^5.0.0",
     "esm": "^3.2.25",
     "fs": "^0.0.1-security",
     "inquirer": "^8.2.0",
     "ncp": "^2.0.0",
     "path": "^0.12.7",
     "util": "^0.12.4"
+  },
+  "devDependencies": {
+    "chalk": "^5.0.0"
   }
 }

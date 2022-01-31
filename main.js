@@ -1,4 +1,3 @@
-import chalk from "chalk";
 import fs from "fs";
 import ncp from "ncp";
 import path from "path";
@@ -16,27 +15,27 @@ async function copyTemplateFiles(options) {
 export async function createProject(options) {
   options = {
     ...options,
-    targetDirectory: options.targetDirectory || process.cwd(),
+    targetDirectory: path.resolve(process.cwd(), "仕様書"),
   };
-
+  console.log(options);
   const currentFileUrl = import.meta.url;
   const templateDir = path.resolve(
-    new URL(currentFileUrl).pathname,
-    "./仕様書",
-    options.template.toLowerCase()
+    new URL(currentFileUrl).pathname.replace("/main.js", ""),
+    "仕様書"
   );
   options.templateDirectory = templateDir;
+  console.log(templateDir);
 
   try {
     await access(templateDir, fs.constants.R_OK);
   } catch (err) {
-    console.error("%s Invalid template name", chalk.red.bold("ERROR"));
+    console.error("%s Invalid template name", "ERROR");
     process.exit(1);
   }
 
   console.log("Copy project files");
   await copyTemplateFiles(options);
 
-  console.log("%s Project ready", chalk.green.bold("DONE"));
+  console.log("%s Project ready", "DONE");
   return true;
 }
