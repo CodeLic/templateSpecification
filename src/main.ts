@@ -6,25 +6,24 @@ import { promisify } from "util";
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
-async function copyTemplateFiles(options) {
+async function copyTemplateFiles(
+  options: Record<string, string>
+): Promise<void> {
   return copy(options.templateDirectory, options.targetDirectory, {
     clobber: false,
   });
 }
 
-export async function createProject(options) {
-  options = {
-    ...options,
+export async function createProject(): Promise<void> {
+  const options: Record<string, string> = {
     targetDirectory: path.resolve(process.cwd(), "仕様書"),
   };
-  console.log(options);
   const currentFileUrl = import.meta.url;
   const templateDir = path.resolve(
-    new URL(currentFileUrl).pathname.replace("/main.js", ""),
+    new URL(currentFileUrl).pathname.replace("/dist/main.js", ""),
     "仕様書"
   );
   options.templateDirectory = templateDir;
-  console.log(templateDir);
 
   try {
     await access(templateDir, fs.constants.R_OK);
@@ -33,9 +32,13 @@ export async function createProject(options) {
     process.exit(1);
   }
 
-  console.log("Copy project files");
-  await copyTemplateFiles(options);
+  console.log("コピーを開始します。");
+  try {
+    await copyTemplateFiles(options);
+  } catch (err) {
+    console.error("コピーに失敗しました。");
+  }
 
-  console.log("%s Project ready", "DONE");
-  return true;
+  console.log("完了しました。");
+  return;
 }
